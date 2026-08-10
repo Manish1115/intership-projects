@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Ticket Verification - CloudBus</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            CloudBus
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('home') }}">
+                Home
+            </a>
+
+            {% if session.get("user_id") %}
+
+                <a href="{{ url_for('dashboard') }}">
+                    Dashboard
+                </a>
+
+            {% else %}
+
+                <a href="{{ url_for('login') }}">
+                    Login
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </nav>
+
+
+    <main class="verification-page">
+
+        {% if ticket and ticket["booking_status"] == "CONFIRMED" %}
+
+            <div class="verification-card valid-ticket">
+
+                <div class="verification-icon">
+                    ✓
+                </div>
+
+                <h1>
+                    Ticket Valid
+                </h1>
+
+                <p class="verification-message">
+                    This is a valid CloudBus ticket.
+                </p>
+
+
+                <div class="verification-details">
+
+                    <div>
+
+                        <span>
+                            Passenger
+                        </span>
+
+                        <strong>
+                            {{ ticket["name"] }}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Ticket Number
+                        </span>
+
+                        <strong>
+                            {{ ticket["ticket_number"] }}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Booking Reference
+                        </span>
+
+                        <strong>
+                            {{ ticket["booking_reference"] }}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Bus
+                        </span>
+
+                        <strong>
+                            {{ ticket["bus_number"] }}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Route
+                        </span>
+
+                        <strong>
+                            {{ ticket["source"] }}
+                            →
+                            {{ ticket["destination"] }}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Journey Date
+                        </span>
+
+                        <strong>
+                            {{ ticket["booking_date"] }}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Seats
+                        </span>
+
+                        <strong>
+                            {{ ticket["seats"] }}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Total Price
+                        </span>
+
+                        <strong>
+                            ₹{{ "%.2f"|format(ticket["total_price"]) }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="verification-status">
+
+                    <strong>
+                        ✓ CONFIRMED
+                    </strong>
+
+                    <p>
+                        Ticket exists in the CloudBus database.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        {% elif ticket %}
+
+            <div class="verification-card invalid-ticket">
+
+                <div class="verification-icon">
+                    ✕
+                </div>
+
+                <h1>
+                    Ticket Cancelled
+                </h1>
+
+                <p class="verification-message">
+                    This ticket exists but is no longer valid.
+                </p>
+
+
+                <div class="verification-status">
+
+                    <strong>
+                        ✕ CANCELLED
+                    </strong>
+
+                    <p>
+                        This ticket cannot be used for travel.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        {% else %}
+
+            <div class="verification-card invalid-ticket">
+
+                <div class="verification-icon">
+                    ✕
+                </div>
+
+                <h1>
+                    Invalid Ticket
+                </h1>
+
+                <p class="verification-message">
+                    No ticket with this number exists in the CloudBus database.
+                </p>
+
+
+                <div class="verification-status">
+
+                    <strong>
+                        ✕ INVALID
+                    </strong>
+
+                    <p>
+                        Do not accept this ticket.
+                    </p>
+
+                </div>
+
+            </div>
+
+        {% endif %}
+
+    </main>
+
+</body>
+
+</html>

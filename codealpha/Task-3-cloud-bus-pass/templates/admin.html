@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Admin Dashboard - CloudBus</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            CloudBus Admin
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('home') }}">
+                Home
+            </a>
+
+            <a href="{{ url_for('logout') }}">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="dashboard">
+
+        <h1>
+            Admin Dashboard
+        </h1>
+
+        <p>
+            System management and monitoring
+        </p>
+
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="message {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <!-- STATISTICS -->
+
+        <section class="admin-stats">
+
+            <div class="stat-card">
+
+                <span>
+                    Total Users
+                </span>
+
+                <strong>
+                    {{ total_users }}
+                </strong>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span>
+                    Total Buses
+                </span>
+
+                <strong>
+                    {{ total_buses }}
+                </strong>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span>
+                    Total Bookings
+                </span>
+
+                <strong>
+                    {{ total_bookings }}
+                </strong>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span>
+                    Confirmed
+                </span>
+
+                <strong>
+                    {{ confirmed_bookings }}
+                </strong>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span>
+                    Cancelled
+                </span>
+
+                <strong>
+                    {{ cancelled_bookings }}
+                </strong>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span>
+                    Revenue
+                </span>
+
+                <strong>
+                    ₹{{ "%.2f"|format(total_revenue) }}
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- ADD BUS -->
+
+        <section class="dashboard-card admin-section">
+
+            <h2>
+                Add New Bus
+            </h2>
+
+
+            <form
+                method="POST"
+                action="{{ url_for('add_bus') }}"
+                class="admin-form"
+            >
+
+                <input
+                    type="text"
+                    name="bus_number"
+                    placeholder="Bus Number"
+                    required
+                >
+
+
+                <input
+                    type="text"
+                    name="operator"
+                    placeholder="Operator"
+                    required
+                >
+
+
+                <input
+                    type="text"
+                    name="source"
+                    placeholder="Source"
+                    required
+                >
+
+
+                <input
+                    type="text"
+                    name="destination"
+                    placeholder="Destination"
+                    required
+                >
+
+
+                <input
+                    type="time"
+                    name="departure_time"
+                    required
+                >
+
+
+                <input
+                    type="time"
+                    name="arrival_time"
+                    required
+                >
+
+
+                <input
+                    type="number"
+                    name="total_seats"
+                    placeholder="Total Seats"
+                    min="1"
+                    required
+                >
+
+
+                <input
+                    type="number"
+                    name="base_price"
+                    placeholder="Price"
+                    min="1"
+                    step="0.01"
+                    required
+                >
+
+
+                <button
+                    type="submit"
+                    class="button"
+                >
+                    Add Bus
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- BUS LIST -->
+
+        <section class="dashboard-card admin-section">
+
+            <h2>
+                Bus Management
+            </h2>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Bus
+                            </th>
+
+                            <th>
+                                Operator
+                            </th>
+
+                            <th>
+                                Route
+                            </th>
+
+                            <th>
+                                Time
+                            </th>
+
+                            <th>
+                                Seats
+                            </th>
+
+                            <th>
+                                Price
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for bus in buses %}
+
+                            <tr>
+
+                                <td>
+                                    {{ bus["bus_number"] }}
+                                </td>
+
+                                <td>
+                                    {{ bus["operator"] }}
+                                </td>
+
+                                <td>
+                                    {{ bus["source"] }}
+                                    →
+                                    {{ bus["destination"] }}
+                                </td>
+
+                                <td>
+                                    {{ bus["departure_time"] }}
+                                    →
+                                    {{ bus["arrival_time"] }}
+                                </td>
+
+                                <td>
+                                    {{ bus["available_seats"] }}
+                                    /
+                                    {{ bus["total_seats"] }}
+                                </td>
+
+                                <td>
+                                    ₹{{ "%.2f"|format(bus["base_price"]) }}
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- RECENT BOOKINGS -->
+
+        <section class="dashboard-card admin-section">
+
+            <h2>
+                Recent Bookings
+            </h2>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Reference
+                            </th>
+
+                            <th>
+                                User
+                            </th>
+
+                            <th>
+                                Route
+                            </th>
+
+                            <th>
+                                Seats
+                            </th>
+
+                            <th>
+                                Price
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for booking in bookings %}
+
+                            <tr>
+
+                                <td>
+                                    {{ booking["booking_reference"] }}
+                                </td>
+
+                                <td>
+                                    {{ booking["name"] }}
+                                    <br>
+                                    {{ booking["email"] }}
+                                </td>
+
+                                <td>
+                                    {{ booking["source"] }}
+                                    →
+                                    {{ booking["destination"] }}
+                                </td>
+
+                                <td>
+                                    {{ booking["seats"] }}
+                                </td>
+
+                                <td>
+                                    ₹{{ "%.2f"|format(booking["total_price"]) }}
+                                </td>
+
+                                <td>
+                                    {{ booking["booking_status"] }}
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

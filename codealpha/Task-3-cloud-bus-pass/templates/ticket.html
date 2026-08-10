@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Digital Ticket - CloudBus</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            CloudBus
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('dashboard') }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('search') }}">
+                Search Buses
+            </a>
+
+            <a href="{{ url_for('logout') }}">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="ticket-page">
+
+        <div class="ticket-card">
+
+
+            <div class="ticket-header">
+
+                <div>
+
+                    <h1>
+                        CloudBus
+                    </h1>
+
+                    <p>
+                        Digital Bus Ticket
+                    </p>
+
+                </div>
+
+
+                <div class="ticket-status">
+
+                    {{ booking["booking_status"] }}
+
+                </div>
+
+            </div>
+
+
+            <div class="ticket-reference">
+
+                <span>
+                    Booking Reference
+                </span>
+
+                <strong>
+                    {{ booking["booking_reference"] }}
+                </strong>
+
+            </div>
+
+
+            <div class="ticket-route">
+
+                <div>
+
+                    <span>
+                        FROM
+                    </span>
+
+                    <strong>
+                        {{ booking["source"] }}
+                    </strong>
+
+                </div>
+
+
+                <div class="route-arrow">
+                    →
+                </div>
+
+
+                <div>
+
+                    <span>
+                        TO
+                    </span>
+
+                    <strong>
+                        {{ booking["destination"] }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="ticket-grid">
+
+
+                <div>
+
+                    <span>
+                        Passenger
+                    </span>
+
+                    <strong>
+                        {{ session["user_name"] }}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Bus
+                    </span>
+
+                    <strong>
+                        {{ booking["bus_number"] }}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Operator
+                    </span>
+
+                    <strong>
+                        {{ booking["operator"] }}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Journey Date
+                    </span>
+
+                    <strong>
+                        {{ booking["booking_date"] }}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Departure
+                    </span>
+
+                    <strong>
+                        {{ booking["departure_time"] }}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Arrival
+                    </span>
+
+                    <strong>
+                        {{ booking["arrival_time"] }}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Seats
+                    </span>
+
+                    <strong>
+                        {{ booking["seats"] }}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Total Price
+                    </span>
+
+                    <strong>
+                        ₹{{ "%.2f"|format(booking["total_price"]) }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="ticket-number">
+
+                <span>
+                    Ticket Number
+                </span>
+
+                <strong>
+                    {{ booking["ticket_number"] }}
+                </strong>
+
+            </div>
+
+
+            <div class="qr-section">
+
+                <h3>
+                    Ticket Verification QR
+                </h3>
+
+                <img
+                    src="data:image/png;base64,{{ qr_code }}"
+                    alt="Ticket QR Code"
+                    class="qr-code"
+                >
+
+                <p>
+                    Scan this QR code to identify the ticket.
+                </p>
+
+            </div>
+
+
+            <div class="ticket-footer">
+
+                <p>
+                    This is a digitally generated CloudBus ticket.
+                </p>
+
+                <p>
+                    Ticket access is linked to the authenticated user account.
+                </p>
+
+            </div>
+
+
+            <div class="ticket-actions">
+
+                <a
+                    href="{{ url_for('dashboard') }}"
+                    class="button"
+                >
+                    Back to Dashboard
+                </a>
+
+
+                <button
+                    onclick="window.print()"
+                    class="button print-button"
+                >
+                    Print Ticket
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>
