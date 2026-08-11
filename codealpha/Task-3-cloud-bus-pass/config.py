@@ -3,7 +3,6 @@ import os
 from dotenv import load_dotenv
 
 
-# Load environment variables from .env
 load_dotenv()
 
 
@@ -37,4 +36,11 @@ class Config:
     MYSQL_DATABASE = os.environ.get(
         "MYSQL_DATABASE",
         "cloudbus"
+    )
+
+    MYSQL_SSL_CA = os.path.join(
+        os.path.dirname(
+            os.path.abspath(__file__)
+        ),
+        "ca.pem"
     )

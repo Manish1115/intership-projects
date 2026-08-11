@@ -41,9 +41,11 @@ def get_db():
         port=Config.MYSQL_PORT,
         user=Config.MYSQL_USER,
         password=Config.MYSQL_PASSWORD,
-        database=Config.MYSQL_DATABASE
+        database=Config.MYSQL_DATABASE,
+        ssl_ca=Config.MYSQL_SSL_CA,
+        ssl_verify_cert=True,
+        ssl_verify_identity=True
     )
-
 
 # ==========================================
 # LOGIN PROTECTION
