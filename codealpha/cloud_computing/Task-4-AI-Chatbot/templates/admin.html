@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+</head>
+<body>
+
+<h2>Add New Knowledge</h2>
+
+<form action="/add" method="POST">
+
+    <input
+        type="text"
+        name="question"
+        placeholder="Question"
+        required
+    >
+
+    <br><br>
+
+    <textarea
+        name="response"
+        placeholder="Response"
+        rows="5"
+        cols="40"
+        required
+    ></textarea>
+
+    <br><br>
+
+    <button type="submit">
+        Save
+    </button>
+
+</form>
+
+</body>
+</html>
