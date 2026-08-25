@@ -207,6 +207,7 @@ The core REST API functionality remains available in the deployed application.
 
 # Project Structure
 
+```text
 Task-3-Project-Management-Tool/
 │
 ├── backend/
@@ -247,8 +248,7 @@ Task-3-Project-Management-Tool/
 │   └── vite.config.js
 │
 └── README.md
-
----
+```
 
 # Running TaskFlow Locally
 
