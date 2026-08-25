@@ -1,5 +1,7 @@
 const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ||
   "http://127.0.0.1:8000/api";
+
 
 export async function apiRequest(
   endpoint,
@@ -11,8 +13,7 @@ export async function apiRequest(
   const headers = {
     ...(options.body
       ? {
-          "Content-Type":
-            "application/json",
+          "Content-Type": "application/json",
         }
       : {}),
     ...(options.headers || {}),
@@ -69,17 +70,16 @@ export async function apiRequest(
       typeof data === "object" &&
       data !== null
     ) {
-      const fieldErrors = Object.entries(
-        data
-      )
-        .filter(
-          ([key]) =>
-            Array.isArray(data[key])
-        )
-        .map(
-          ([key, messages]) =>
-            `${key}: ${messages.join(", ")}`
-        );
+      const fieldErrors =
+        Object.entries(data)
+          .filter(
+            ([key]) =>
+              Array.isArray(data[key])
+          )
+          .map(
+            ([key, messages]) =>
+              `${key}: ${messages.join(", ")}`
+          );
 
       if (fieldErrors.length > 0) {
         message =
@@ -87,7 +87,8 @@ export async function apiRequest(
       }
     }
 
-    const error = new Error(message);
+    const error =
+      new Error(message);
 
     error.status =
       response.status;
@@ -99,6 +100,7 @@ export async function apiRequest(
 
   return data;
 }
+
 
 export function registerUser(
   userData
@@ -114,6 +116,7 @@ export function registerUser(
   );
 }
 
+
 export function getTasks(
   params = {}
 ) {
@@ -127,7 +130,10 @@ export function getTasks(
         value !== null &&
         value !== ""
       ) {
-        query.append(key, value);
+        query.append(
+          key,
+          value
+        );
       }
     }
   );
@@ -144,16 +150,21 @@ export function getTasks(
   );
 }
 
+
 export function createTask(
   taskData
 ) {
-  return apiRequest("/tasks/", {
-    method: "POST",
-    body: JSON.stringify(
-      taskData
-    ),
-  });
+  return apiRequest(
+    "/tasks/",
+    {
+      method: "POST",
+      body: JSON.stringify(
+        taskData
+      ),
+    }
+  );
 }
+
 
 export function updateTask(
   taskId,
@@ -170,6 +181,7 @@ export function updateTask(
   );
 }
 
+
 export function deleteTask(
   taskId
 ) {
@@ -181,11 +193,13 @@ export function deleteTask(
   );
 }
 
+
 export function getProjects() {
   return apiRequest(
     "/projects/"
   );
 }
+
 
 export function createProject(
   projectData
@@ -200,6 +214,7 @@ export function createProject(
     }
   );
 }
+
 
 export function updateProject(
   projectId,
@@ -216,11 +231,13 @@ export function updateProject(
   );
 }
 
+
 export function getUsers() {
   return apiRequest(
     "/accounts/users/"
   );
 }
+
 
 export function getMe() {
   return apiRequest(
@@ -228,11 +245,13 @@ export function getMe() {
   );
 }
 
+
 export function getNotifications() {
   return apiRequest(
     "/notifications/"
   );
 }
+
 
 export function getComments(
   taskId
@@ -241,6 +260,7 @@ export function getComments(
     `/comments/?task=${taskId}`
   );
 }
+
 
 export function clearAllNotifications() {
   return apiRequest(
