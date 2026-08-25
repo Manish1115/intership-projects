@@ -13,15 +13,19 @@ function useNotificationsSocket(
       return;
     }
 
+    const wsBaseUrl =
+      import.meta.env.VITE_WS_BASE_URL ||
+      "ws://127.0.0.1:8000";
+
     const socket = new WebSocket(
-      `ws://127.0.0.1:8000/ws/notifications/?token=${encodeURIComponent(
+      `${wsBaseUrl}/ws/notifications/?token=${encodeURIComponent(
         token
       )}`
     );
 
     socket.onopen = () => {
       console.log(
-        "WebSocket connected."
+        "Notification WebSocket connected."
       );
     };
 
@@ -79,7 +83,7 @@ function useNotificationsSocket(
 
     socket.onclose = () => {
       console.log(
-        "WebSocket disconnected."
+        "Notification WebSocket disconnected."
       );
     };
 

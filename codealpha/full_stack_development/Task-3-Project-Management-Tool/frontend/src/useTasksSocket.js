@@ -23,17 +23,12 @@ function useTasksSocket(onTaskUpdate) {
         return;
       }
 
-      const protocol =
-        window.location.protocol === "https:"
-          ? "wss:"
-          : "ws:";
-
-      const host =
-        window.location.hostname ||
-        "127.0.0.1";
+      const wsBaseUrl =
+        import.meta.env.VITE_WS_BASE_URL ||
+        "ws://127.0.0.1:8000";
 
       const url =
-        `${protocol}//${host}:8000/ws/tasks/?token=${encodeURIComponent(
+        `${wsBaseUrl}/ws/tasks/?token=${encodeURIComponent(
           token
         )}`;
 
@@ -65,7 +60,6 @@ function useTasksSocket(onTaskUpdate) {
             console.log(
               data.message
             );
-
             return;
           }
 
@@ -75,9 +69,7 @@ function useTasksSocket(onTaskUpdate) {
             if (
               callbackRef.current
             ) {
-              callbackRef.current(
-                data
-              );
+              callbackRef.current(data);
             }
           }
         } catch (error) {
@@ -102,9 +94,7 @@ function useTasksSocket(onTaskUpdate) {
           event.reason
         );
 
-        if (
-          !manuallyClosed
-        ) {
+        if (!manuallyClosed) {
           reconnectTimer =
             setTimeout(() => {
               connectWebSocket();
@@ -143,6 +133,8 @@ function useTasksSocket(onTaskUpdate) {
       }
     };
   }, []);
+
+  return null;
 }
 
 export default useTasksSocket;

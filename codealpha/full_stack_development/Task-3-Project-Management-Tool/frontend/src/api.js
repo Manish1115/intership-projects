@@ -2,13 +2,8 @@ const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
   "http://127.0.0.1:8000/api";
 
-
-export async function apiRequest(
-  endpoint,
-  options = {}
-) {
-  const token =
-    localStorage.getItem("access_token");
+export async function apiRequest(endpoint, options = {}) {
+  const token = localStorage.getItem("access_token");
 
   const headers = {
     ...(options.body
@@ -20,8 +15,7 @@ export async function apiRequest(
   };
 
   if (token) {
-    headers.Authorization =
-      `Bearer ${token}`;
+    headers.Authorization = `Bearer ${token}`;
   }
 
   const response = await fetch(
@@ -33,33 +27,20 @@ export async function apiRequest(
   );
 
   if (response.status === 401) {
-    localStorage.removeItem(
-      "access_token"
-    );
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
 
-    localStorage.removeItem(
-      "refresh_token"
-    );
-
-    throw new Error(
-      "SESSION_EXPIRED"
-    );
+    throw new Error("SESSION_EXPIRED");
   }
 
-  const data =
-    await response.json().catch(
-      () => null
-    );
+  const data = await response.json().catch(() => null);
 
   if (!response.ok) {
-    console.error(
-      "API ERROR:",
-      {
-        endpoint,
-        status: response.status,
-        data,
-      }
-    );
+    console.error("API ERROR:", {
+      endpoint,
+      status: response.status,
+      data,
+    });
 
     let message =
       data?.detail ||
@@ -70,29 +51,22 @@ export async function apiRequest(
       typeof data === "object" &&
       data !== null
     ) {
-      const fieldErrors =
-        Object.entries(data)
-          .filter(
-            ([key]) =>
-              Array.isArray(data[key])
-          )
-          .map(
-            ([key, messages]) =>
-              `${key}: ${messages.join(", ")}`
-          );
+      const fieldErrors = Object.entries(data)
+        .filter(
+          ([key]) => Array.isArray(data[key])
+        )
+        .map(
+          ([key, messages]) =>
+            `${key}: ${messages.join(", ")}`
+        );
 
       if (fieldErrors.length > 0) {
-        message =
-          fieldErrors.join(" | ");
+        message = fieldErrors.join(" | ");
       }
     }
 
-    const error =
-      new Error(message);
-
-    error.status =
-      response.status;
-
+    const error = new Error(message);
+    error.status = response.status;
     error.data = data;
 
     throw error;
@@ -101,27 +75,18 @@ export async function apiRequest(
   return data;
 }
 
-
-export function registerUser(
-  userData
-) {
+export function registerUser(userData) {
   return apiRequest(
     "/accounts/register/",
     {
       method: "POST",
-      body: JSON.stringify(
-        userData
-      ),
+      body: JSON.stringify(userData),
     }
   );
 }
 
-
-export function getTasks(
-  params = {}
-) {
-  const query =
-    new URLSearchParams();
+export function getTasks(params = {}) {
+  const query = new URLSearchParams();
 
   Object.entries(params).forEach(
     ([key, value]) => {
@@ -130,16 +95,12 @@ export function getTasks(
         value !== null &&
         value !== ""
       ) {
-        query.append(
-          key,
-          value
-        );
+        query.append(key, value);
       }
     }
   );
 
-  const queryString =
-    query.toString();
+  const queryString = query.toString();
 
   return apiRequest(
     `/tasks/${
@@ -150,41 +111,24 @@ export function getTasks(
   );
 }
 
-
-export function createTask(
-  taskData
-) {
-  return apiRequest(
-    "/tasks/",
-    {
-      method: "POST",
-      body: JSON.stringify(
-        taskData
-      ),
-    }
-  );
+export function createTask(taskData) {
+  return apiRequest("/tasks/", {
+    method: "POST",
+    body: JSON.stringify(taskData),
+  });
 }
 
-
-export function updateTask(
-  taskId,
-  taskData
-) {
+export function updateTask(taskId, taskData) {
   return apiRequest(
     `/tasks/${taskId}/`,
     {
       method: "PATCH",
-      body: JSON.stringify(
-        taskData
-      ),
+      body: JSON.stringify(taskData),
     }
   );
 }
 
-
-export function deleteTask(
-  taskId
-) {
+export function deleteTask(taskId) {
   return apiRequest(
     `/tasks/${taskId}/`,
     {
@@ -193,28 +137,19 @@ export function deleteTask(
   );
 }
 
-
 export function getProjects() {
-  return apiRequest(
-    "/projects/"
-  );
+  return apiRequest("/projects/");
 }
 
-
-export function createProject(
-  projectData
-) {
+export function createProject(projectData) {
   return apiRequest(
     "/projects/",
     {
       method: "POST",
-      body: JSON.stringify(
-        projectData
-      ),
+      body: JSON.stringify(projectData),
     }
   );
 }
-
 
 export function updateProject(
   projectId,
@@ -224,13 +159,10 @@ export function updateProject(
     `/projects/${projectId}/`,
     {
       method: "PATCH",
-      body: JSON.stringify(
-        projectData
-      ),
+      body: JSON.stringify(projectData),
     }
   );
 }
-
 
 export function getUsers() {
   return apiRequest(
@@ -238,13 +170,11 @@ export function getUsers() {
   );
 }
 
-
 export function getMe() {
   return apiRequest(
     "/auth/me/"
   );
 }
-
 
 export function getNotifications() {
   return apiRequest(
@@ -252,15 +182,11 @@ export function getNotifications() {
   );
 }
 
-
-export function getComments(
-  taskId
-) {
+export function getComments(taskId) {
   return apiRequest(
     `/comments/?task=${taskId}`
   );
 }
-
 
 export function clearAllNotifications() {
   return apiRequest(
