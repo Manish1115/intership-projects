@@ -210,7 +210,6 @@ The core REST API functionality remains available in the deployed application.
 Task-3-Project-Management-Tool/
 │
 ├── backend/
-│   │
 │   ├── accounts/
 │   ├── comments/
 │   ├── config/
@@ -224,24 +223,25 @@ Task-3-Project-Management-Tool/
 │   └── staticfiles/
 │
 ├── frontend/
-│   │
 │   ├── src/
 │   │   ├── assets/
 │   │   ├── api.js
-│   │   ├── App.jsx
 │   │   ├── App.css
-│   │   ├── Dashboard.jsx
+│   │   ├── App.jsx
 │   │   ├── Comments.jsx
+│   │   ├── Dashboard.jsx
+│   │   ├── index.css
 │   │   ├── Login.jsx
-│   │   ├── Signup.jsx
-│   │   ├── Projects.jsx
+│   │   ├── main.jsx
+│   │   ├── Notifications.jsx
 │   │   ├── ProjectDetails.jsx
 │   │   ├── ProjectForm.jsx
-│   │   ├── Tasks.jsx
+│   │   ├── Projects.jsx
+│   │   ├── Signup.jsx
 │   │   ├── TaskForm.jsx
-│   │   ├── Notifications.jsx
-│   │   ├── useTasksSocket.js
-│   │   └── useNotificationsSocket.js
+│   │   ├── Tasks.jsx
+│   │   ├── useNotificationsSocket.js
+│   │   └── useTasksSocket.js
 │   │
 │   ├── package.json
 │   └── vite.config.js
