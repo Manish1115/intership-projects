@@ -4,7 +4,7 @@ Welcome to my **Internship Projects** repository.
 
 This repository serves as a collection of all the internship projects I have completed during my learning journey. Each internship has its own dedicated folder containing the assigned tasks, source code, documentation, and project-specific resources.
 
-The goal of this repository is to showcase practical experience gained through real-world internship assignments across various domains, including software development, cloud computing, cybersecurity, artificial intelligence, web development, and much more.
+The goal of this repository is to showcase practical experience gained through real-world internship assignments across various domains, including software development, cloud computing, cybersecurity, artificial intelligence, web development, and more.
 
 ---
 
